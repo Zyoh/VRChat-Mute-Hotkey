@@ -13,13 +13,18 @@ class VRChatMuteHotkey:
 		if hotkey is None:
 			hotkey = "F8"
 	
-		self.hotkey = hotkey
+		self.hotkey: str = hotkey
 		self.client = udp_client.SimpleUDPClient(ip, sender_port)
+		self.is_muted: bool = True
 
 	def toggle_mute(self):
-		self.client.send_message("/input/Voice", 0)
-		time.sleep(0.1)
-		self.client.send_message("/input/Voice", 1)
+		self.client.send_message("/input/Voice", self.is_muted)
+		self.is_muted = not self.is_muted
+		
+		if self.is_muted:
+			print(f"{'Muted':<10}\r", end="")
+		else:
+			print(f"{'Unmuted':<10}\r", end="")
 
 	def run(self):
 		try:
