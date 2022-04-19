@@ -17,7 +17,7 @@ class VRChatMuteHotkey:
 		self.client = udp_client.SimpleUDPClient(ip, sender_port)
 		self.is_muted: bool = True
 
-	def toggle_mute(self):
+	def toggle_mute(self, *_):
 		self.client.send_message("/input/Voice", self.is_muted)
 		self.is_muted = not self.is_muted
 		
@@ -28,7 +28,7 @@ class VRChatMuteHotkey:
 
 	def run(self):
 		try:
-			keyboard.add_hotkey(self.hotkey, self.toggle_mute)
+			keyboard.on_release_key(self.hotkey, self.toggle_mute)
 			keyboard.wait()
 		except KeyboardInterrupt:
 			pass
